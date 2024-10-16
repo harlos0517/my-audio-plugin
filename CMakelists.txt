@@ -1,0 +1,49 @@
+cmake_minimum_required(VERSION 3.15)
+
+project(MyPlugin VERSION 0.0.1)
+
+# Set the C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /utf-8")
+
+# Add JUCE to the project
+add_subdirectory("C:/Program Files/JUCE" JUCE)
+
+# Set the VST3 plugin options
+juce_add_plugin(MyPlugin
+    COMPANY_NAME "HarlosMusic"
+    PLUGIN_NAME "MyPlugin"
+    VERSION "0.1.0"
+    IS_SYNTH FALSE
+    NEEDS_MIDI_INPUT FALSE
+    PRODUCES_MIDI_OUTPUT FALSE
+    IS_MIDI_EFFECT FALSE
+    EDITOR_WANTS_KEYBOARD_FOCUS FALSE
+    COPY_PLUGIN_AFTER_BUILD TRUE
+    VST3_COPY_DIR "D:/soundfonts/MyPlugin"
+    PLUGIN_MANUFACTURER_CODE HRLS
+    PLUGIN_CODE MPLG
+    FORMATS VST3
+    PRODUCT_NAME "MyPlugin"
+)
+
+# Set the target for the plugin
+target_sources(MyPlugin PRIVATE
+    source/PluginProcessor.cpp
+    source/PluginProcessor.h
+    source/PluginEditor.cpp
+    source/PluginEditor.h
+)
+
+# Link JUCE to your target
+target_link_libraries(MyPlugin PRIVATE
+    juce::juce_audio_utils
+    juce::juce_audio_processors
+    juce::juce_core
+    juce::juce_gui_basics
+    juce::juce_gui_extra
+)
+
+# Enable JUCE-specific warnings and configurations
+juce_generate_juce_header(MyPlugin)
